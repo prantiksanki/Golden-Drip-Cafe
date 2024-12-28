@@ -9,6 +9,11 @@ router.get("/cart" , (req,res) =>
 })
 
 
+router.post("/addToCart" , (req,res)=>
+{
+    
+})
+
 
 
 
