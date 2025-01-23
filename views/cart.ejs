@@ -45,27 +45,39 @@
         <h1 class="menu-header">Welcome to Golden Drip Cafe</h1>
 
         <!-- Chicken Dum Biryani Card -->
-        <div class="card">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="https://www.thespruceeats.com/thmb/SalyKjzBU-K1Bv-FTFWnbd6ckjY=/2121x1414/filters:fill(auto,1)/GettyImages-639704020-5c4a63ecc9e77c00017bfebf.jpg" 
-                         class="img-fluid" alt="Biryani">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">Chicken Dum Biryani</h5>
-                        <p class="card-text">1 kg chicken dum biryani + 1 cup raita + 1 cup aachar + salad + Coca-Cola</p>
-                        <div>
-                          <button class="btn btn-danger btn-sm" onclick="updateCount('biryani', -1)">-</button>
-                          <span id="biryani" class="px-3">0</span>
-                          <button class="btn btn-primary btn-sm" onclick="updateCount('biryani', 1)">+</button>
+         <% items.forEach(menu => { %>
+            <div class="card">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src=<%= menu.image %> 
+                             class="img-fluid" alt=<%= menu.name %>>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= menu.name %></h5>
+                            <p class="card-text"><%= menu.description %></p>
+                            <div>
+                                <div class="btn-group dropend">
+                                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                      Qty: 
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" value = 1 >1</a></li>
+                                        <li><a class="dropdown-item" value = 2 >2</a></li>
+                                        <li><a class="dropdown-item" value = 3>3</a></li>
+                                        <li><a class="dropdown-item" value = 4>4</a></li>
+                                        <li><a class="dropdown-item" value = 5>5</a></li>
+                                    </ul>
+                                  </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+         <% }) %>
+        
 
-        <!-- Chicken Chap Card -->
+        <!-- Chicken Chap Card
         <div class="card">
             <div class="row g-0">
                 <div class="col-md-4">
@@ -85,7 +97,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <%- include('./partials/scripts') %>
 
@@ -94,7 +106,7 @@
             const countElement = document.getElementById(productId);
             let count = parseInt(countElement.innerText);
             count += increment;
-            if (count < 0) count = 0;
+            if (count < 1) count = 1;
             if(count >20) count = 20 ; 
              
             countElement.innerText = count;

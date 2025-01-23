@@ -4,30 +4,109 @@
     <%- include('./partials/head') %>
     <title>Golden Drip Cafe</title>
 </head>
+<style>
+  body {
+      background-color: #f8f9fa; /* Light background for better contrast */
+  }
+  .menu-title {
+      margin: 30px 0;
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #6c757d;
+  }
+  .card {
+      border: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+      height: 100%; /* Ensures uniform height for all cards */
+      display: flex;
+      flex-direction: column; /* Align content vertically */
+  }
+  .card img {
+      height: 200px;
+      object-fit: cover; /* Ensures image fits nicely */
+      border-top-left-radius: 0.5rem;
+      border-top-right-radius: 0.5rem;
+  }
+  .card-body {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column; /* Align content vertically */
+      flex-grow: 1; /* Ensures all card bodies take the same vertical space */
+  }
+  .card-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+  }
+  .card-text {
+      font-size: 1rem;
+      color: #6c757d;
+      margin-bottom: 1rem;
+  }
+  .btn-primary {
+      background-color: #ff7f50; /* Coral button */
+      border: none;
+      margin-top: auto; /* Pushes the button to the bottom */
+  }
+  .btn-primary:hover {
+      background-color: #e67340; /* Darker coral on hover */
+  }
+</style>
 <body>
     
     <%- include('./partials/nav') %>
 
-    <div class="card" style="width: 18rem;">
-        <img src="https://www.thespruceeats.com/thmb/SalyKjzBU-K1Bv-FTFWnbd6ckjY=/2121x1414/filters:fill(auto,1)/GettyImages-639704020-5c4a63ecc9e77c00017bfebf.jpg
-        " class="card-img-top" alt="Biryani">
-        <div class="card-body">
-          <h5 class="card-title"><b>Chicken Dum Biryani</b></h5>
-          <p class="card-text">1 kg chicken dum biryani + 1 cup raita + 1 cup aachar + salad + coca cola
-        </p>
-
-        <p><b>Price : </b>230</p>
-          <!-- <a href="#" class="btn btn-outline-primary">show details</a> -->
-          <a href="#" class="btn btn-outline-primary">Add to cart</a>
+    <div class="container">
+      <h1 class="menu-title">Our Menu</h1>
+      <div class="row justify-content-center">
+          <% if (menuItems && menuItems.length) { %>
+              <% menuItems.forEach(item => { %>
+                  <div class="col-md-6 col-lg-4 ">
+                      <div class="card mb-4">
+                          <img src="<%= item.image %>" class="card-img-top" alt="<%= item.name || 'Image' %>">
+                          <div class="card-body">
+                              <h5 class="card-title"><%= item.name || 'Unnamed Item' %></h5>
+                              <p class="card-text"><%= item.description || 'No description available.' %></p>
+                              <p class="card-text"><strong>Price:</strong> <%= item.price || 'N/A' %></p>
+                              <p class="card-text"><strong>Available Quantity:</strong> <%= item.quantity || 'N/A' %></p>
+                              <a href="/" class="btn btn-primary" onclick="addcart('<%= item._id %>', this)">Add to cart</a>
+                            </div>
+                      </div>
+                  </div>
+              <% }) %>
+          <% } else { %>
+              <div class="col-12 text-center">
+                  <p class="text-muted">No menu items available. Please check back later.</p>
+              </div>
+          <% } %>
         </div>
-      </div>
-
-
-
+    </div>
+    
+    <!-- <%= JSON.stringify(user) %> -->
     <%- include('./partials/scripts') %>
     <!-- <%- include('./partials/foot') %> -->
 
 
+
+    <script>
+      async  function addcart(itemId) {
+      await  fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ itemId })
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Item added to cart successfully.');
+        } else {
+            console.error('Failed to add item to cart.');
+        }
+    })
+    .catch(err => console.error('Error:', err));
+}
+
+    </script>
 
 
 </body>

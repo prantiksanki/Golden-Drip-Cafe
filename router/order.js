@@ -1,20 +1,31 @@
 const {Router} = require("express") ; 
 const router = Router() ; 
+const user = require("./user")
+const cart = require("../model/cart");
 
 
 
-router.get("/cart" , (req,res) =>
+router.get("/cart" , async (req,res) =>
 {
-    return res.render("cart")
+    const menu = await cart.find({}) ;  
+
+    return res.render("cart" , 
+        {
+            items : menu , 
+        }
+    )
 })
 
 
-router.post("/addToCart" , (req,res)=>
+router.post("/cart" , (req,res)=>
 {
-    
+    const cartMenu = req.body ; 
+    console.log(cartMenu) ;
 })
 
 
 
 
-module.exports = router ; 
+module.exports = router ;
+
+

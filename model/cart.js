@@ -26,7 +26,7 @@ const cartSchema  = mongoose.Schema({
     prodURL :
     {
         type : String , 
-        default : "/images/foodPic.jpg" 
+        default : "https://ga-core.s3.amazonaws.com/production/uploads/program/default_image/11777/Data_Plate_Fork_Knife_Food_Pie_Chart_Graph.jpg" 
     }, 
     profileId :
     {

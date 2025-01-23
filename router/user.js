@@ -80,11 +80,33 @@ router.get("/login" , (req,res) =>
 })
 
 
+// router.get()
 
 router.get("/logout" , (req,res) =>
 {
     res.clearCookie("token").redirect("/") ;
 });
 
+
+// router.post("/login" , async (req,res) =>
+//     {
+    
+//     try
+//     {
+//         const {email, password} = req.body ; 
+//     const token = await User.matchPasswordAndGenerateToken(email , password) ; 
+    
+//     return res.cookie("token" , token).redirect("/") ;
+    
+//     }
+//     catch(error){
+    
+//         return res.render("signin" , {
+//             error : "Incorrect Email or Password",
+//         }) ; 
+//     }
+    
+//     })
+    
 
 module.exports = router ;

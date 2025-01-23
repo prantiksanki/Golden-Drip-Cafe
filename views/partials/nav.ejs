@@ -9,15 +9,35 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/menu/cart">Cart</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/user/">Prantik</a>
-          </li>
-          <!-- <li class="nav-item">
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-          </li> -->
+      
+          
+
+
+            <% if (locals.user) { %>
+        
+              <li class="nav-item">
+              <a class="nav-link" href="/menu/cart">Cart</a>
+              </li>
+              <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <%= locals.user.name %>
+              </a>
+              <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/user/logout">Log out</a></li>
+              </ul>
+              </li>
+              <% } 
+              
+          else { %>
+              <li class="nav-item">
+              <a href="/user/signup" class="nav-link">Create Account</a>
+              </li>
+              <li class="nav-item">
+              <a href="/user/login" class="nav-link">Sign in</a>
+              </li>
+          <% } 
+          %>
+
 
         </ul>
       </div>
