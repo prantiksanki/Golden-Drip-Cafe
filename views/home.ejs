@@ -70,7 +70,7 @@
                               <p class="card-text"><%= item.description || 'No description available.' %></p>
                               <p class="card-text"><strong>Price:</strong> <%= item.price || 'N/A' %></p>
                               <p class="card-text"><strong>Available Quantity:</strong> <%= item.quantity || 'N/A' %></p>
-                              <a href="/" class="btn btn-primary" onclick="addcart('<%= item._id %>', this)">Add to cart</a>
+                              <a  class="btn btn-primary" onclick="addcart('<%= item._id %>')">Add to cart</a>
                             </div>
                       </div>
                   </div>
@@ -91,6 +91,7 @@
 
     <script>
       async  function addcart(itemId) {
+    console.log('Adding item with ID:', itemId); // Debug log
       await  fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -99,6 +100,7 @@
     .then(response => {
         if (response.ok) {
             console.log('Item added to cart successfully.');
+            console.log(itemId) ; 
         } else {
             console.error('Failed to add item to cart.');
         }

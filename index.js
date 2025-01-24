@@ -8,6 +8,7 @@ const mongoose = require("mongoose") ;
 const cookieParser = require("cookie-parser") ;
 const checkForAuthenticationCookie = require("./middleware/authentication");
 const menu = require("./model/menu") ;
+const cartAdd = require("./model/cart"); 
 
 app.set("view engine" , "ejs") ; 
 app.set("views" , path.resolve("./views"))
@@ -16,6 +17,7 @@ app.use(cookieParser()) ;
 app.use(checkForAuthenticationCookie("token")) ;
 app.use(express.static(path.resolve("./public"))) ;     
 app.use(express.urlencoded({extended : false})) ; 
+app.use(express.json());
 
 mongoose.connect("mongodb://localhost:27017/Golden_Drip_Cafe")  
 .then(e => console.log("MongoDB is connected")) ; 
@@ -33,11 +35,30 @@ app.get("/" , async (req,res) =>
 
 })
 
-app.post("/" , (req,res) =>
-{
-    console.log(req.body) ;
-    res.send("Menu Order Received") ; 
-})
+app.post('/', async (req, res) => {
+    const { itemId } = req.body;
+    console.log('Received itemId:', itemId);
+
+    const specificMenu = await menu.findOne({ _id: itemId });
+    if (itemId) 
+    {
+        await cartAdd.create(
+            {
+                prodName : specificMenu.name , 
+                prodID : itemId , 
+                description : specificMenu.description ,
+                price : specificMenu.price , 
+                prodURL : specificMenu.image,
+                profileId : req.user._id,
+            }
+        )
+    } 
+    else 
+    {
+        res.status(400).send('itemId not provided');
+    }
+});
+
 
 
 
