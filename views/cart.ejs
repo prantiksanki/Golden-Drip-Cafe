@@ -127,9 +127,8 @@
     <div class="container menu-section">
         <h1 class="menu-header">Golden Drip Cafe</h1>
 
-        <!-- Menu Items -->
-        <% items.forEach(menu => { %>
-        <div class="card">
+         <% items.forEach(menu => { %>
+        <div class="card" id = '<%= menu.prodName %>'>
             <div class="row g-0">
                 <div class="col-md-4">
                     <img src="<%= menu.prodURL %>" alt="<%= menu.prodName %>" class="img-fluid">
@@ -146,7 +145,7 @@
                                 <button class="btn-qty" onclick="updateCount('<%= menu._id %>', 1)">+</button>
                             </div>
                             <button class="btn btn-primary" onclick="addToCart('<%= menu._id %>')">Save</button>
-                            <button class="btn btn-primary" onclick="addToCart('<%= menu._id %>')">Cancel</button>
+                            <button class="btn btn-primary" onclick="cancelFromCart('<%= menu.prodName %>')">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -158,7 +157,7 @@
     </div>
 
     <script>
-        const cart = []; // Replace Set with an array
+        const cart = [];  
     
     function updateCount(productId, increment) {
         const countElement = document.getElementById(productId);
@@ -175,15 +174,44 @@
         const existingItem = cart.find(item => item.itemId === itemId);
         if (existingItem) 
         {
-            existingItem.quantity = quantity; // Update quantity
+            existingItem.quantity = quantity; 
         } 
         else 
         {
-            cart.push({ itemId, quantity }); // Add new item
+            cart.push({ itemId, quantity }); 
         }
         
         alert('Item added or updated in the cart successfully!');
         console.log(cart);
+    }
+
+    async function cancelFromCart (itemName)
+    {
+        try{
+            const element = document.getElementById(itemName);
+            if (element) {
+                 element.innerHTML = '';
+            } 
+            else 
+            {
+                console.log(`Element with id "${itemName}" not found in the DOM.`);
+            }
+            console.log("Removing.. "+itemName+' from cart');
+
+            await fetch('/menu/cart/remove', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ itemName }),
+            });  
+
+        }
+        catch (error)
+        {
+            console.error('Error canceling from cart:', error);
+            alert('An error occurred. Please try again later.');
+        }
+       
+
     }
     
     async function orderPlace() {
@@ -191,17 +219,17 @@
             const response = await fetch('/menu/cart', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(cart), // Send the cart array
+                body: JSON.stringify(cart), 
             });
             
             if (response.ok) 
             {
-                alert('Order placed successfully!');
+                await alert('Order placed successfully!');
                 cart.length = 0; 
             } 
             else 
             {
-                alert('Failed to place the order. Please try again.');
+               await alert('Failed to place the order. Please try again.');
             }
         } 
         catch (error) 

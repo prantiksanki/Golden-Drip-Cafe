@@ -40,6 +40,7 @@ app.post('/', async (req, res) => {
     console.log('Received itemId:', itemId);
 
     const specificMenu = await menu.findOne({ _id: itemId });
+    // console.log(specificMenu);
     if (itemId) 
     {
         await cartAdd.create(
@@ -58,7 +59,6 @@ app.post('/', async (req, res) => {
         res.status(400).send('itemId not provided');
     }
 });
-
 
 
 
