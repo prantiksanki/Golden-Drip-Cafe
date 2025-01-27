@@ -34,29 +34,38 @@ app.get("/" , async (req,res) =>
 
 
 })
-
 app.post('/', async (req, res) => {
     const { itemId } = req.body;
     console.log('Received itemId:', itemId);
 
+    if (!itemId) {
+        return res.status(400).send('itemId not provided');
+    }
+
     const specificMenu = await menu.findOne({ _id: itemId });
-    // console.log(specificMenu);
-    if (itemId) 
-    {
-        await cartAdd.create(
-            {
-                prodName : specificMenu.name , 
-                prodID : itemId , 
-                description : specificMenu.description ,
-                price : specificMenu.price , 
-                prodURL : specificMenu.image,
-                profileId : req.user._id,
-            }
-        )
-    } 
-    else 
-    {
-        res.status(400).send('itemId not provided');
+    if (!specificMenu) {
+        return res.status(404).send('Menu item not found');
+    }
+
+    if (req.user && req.user._id) {
+        try {
+            await cartAdd.create({
+                prodName: specificMenu.name,
+                prodID: itemId,
+                description: specificMenu.description,
+                price: specificMenu.price,
+                prodURL: specificMenu.image,
+                profileId: req.user._id,
+            });
+            return res.status(200).send('Item added to cart');
+        } 
+        catch (err) 
+        {
+            console.log("Error adding item to cart:", err);
+            return res.status(500).send('Internal server error');
+        }
+    } else {
+        return res.status(401).send('User not authenticated');
     }
 });
 

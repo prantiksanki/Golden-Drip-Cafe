@@ -30,7 +30,7 @@ router.post("/cart" , (req,res)=>
 
 router.post("/cart/remove", async (req, res) => {
     try {
-        const { itemName } = req.body;  
+        const { itemName} = req.body;  
         console.log("Item to remove:", itemName , " from user : " , req.user._id);
 
          if (!itemName || typeof itemName !== "string") {
