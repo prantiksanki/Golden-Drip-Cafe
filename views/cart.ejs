@@ -175,7 +175,9 @@
     <script>
         const cart = [];  
         let totPrice = 0 ;
-    function updateCount(productId, increment) {
+
+    function updateCount(productId, increment) 
+    {
         const countElement = document.getElementById(productId);
         let count = parseInt(countElement.innerText);
         count += increment;
@@ -239,18 +241,18 @@
             const response = await fetch('/menu/cart', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(cart), 
+                body: JSON.stringify({cart,totPrice}), 
             });
             
-            if (response.ok) 
-            {
-                await alert('Order placed successfully!');
-                cart.length = 0; 
-            } 
-            else 
-            {
-               await alert('Failed to place the order. Please try again.');
-            }
+            // if (response.ok) 
+            // {
+            //     await alert('Order placed successfully!');
+            //     cart.length = 0; 
+            // } 
+            // else 
+            // {
+            //    await alert('Failed to place the order. Please try again.');
+            // }
         } 
         catch (error) 
         {
